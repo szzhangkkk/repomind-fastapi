@@ -1,0 +1,12 @@
+config/.env
+**/__pycache__/
+*.pyc
+hf_model_cache/
+outputs/
+data/raw/
+*.log
+.DS_Store
+.venv-ft/
+models/
+pe/model_cache/
+logs/

@@ -1,0 +1,252 @@
+{
+  "configs": {
+    "v6_baseline": {
+      "config": {
+        "top_k": 10,
+        "adaptive_top_k": false,
+        "use_mmr": false,
+        "use_bm25": false
+      },
+      "v6_index": {
+        "recall_at_5": 0.07,
+        "recall_at_10": 0.1102,
+        "mrr_at_10": 0.0849
+      },
+      "v7min_index": {
+        "recall_at_5": 0.0033,
+        "recall_at_10": 0.0113,
+        "mrr_at_10": 0.0073
+      }
+    },
+    "adaptive": {
+      "config": {
+        "top_k": 10,
+        "adaptive_top_k": true,
+        "use_mmr": false,
+        "use_bm25": false
+      },
+      "v6_index": {
+        "recall_at_5": 0.07,
+        "recall_at_10": 0.072,
+        "mrr_at_10": 0.0713
+      },
+      "v7min_index": {
+        "recall_at_5": 0.0033,
+        "recall_at_10": 0.0113,
+        "mrr_at_10": 0.0073
+      }
+    },
+    "adaptive_bm25": {
+      "config": {
+        "top_k": 10,
+        "adaptive_top_k": true,
+        "use_mmr": false,
+        "use_bm25": true
+      },
+      "v6_index": {
+        "recall_at_5": 0.3198,
+        "recall_at_10": 0.34,
+        "mrr_at_10": 0.2107
+      },
+      "v7min_index": {
+        "recall_at_5": 0.5282,
+        "recall_at_10": 0.5302,
+        "mrr_at_10": 0.285
+      }
+    },
+    "adaptive_bm25_mmr": {
+      "config": {
+        "top_k": 10,
+        "adaptive_top_k": true,
+        "use_mmr": true,
+        "use_bm25": true
+      },
+      "v6_index": {
+        "recall_at_5": 0.3225,
+        "recall_at_10": 0.34,
+        "mrr_at_10": 0.2167
+      },
+      "v7min_index": {
+        "recall_at_5": 0.5187,
+        "recall_at_10": 0.5302,
+        "mrr_at_10": 0.2313
+      }
+    }
+  },
+  "per_category": {
+    "call_chain": {
+      "v6_baseline": {
+        "v6_index": 0.2538,
+        "v7min_index": 0.0
+      },
+      "adaptive": {
+        "v6_index": 0.1154,
+        "v7min_index": 0.0
+      },
+      "adaptive_bm25": {
+        "v6_index": 0.459,
+        "v7min_index": 0.2923
+      },
+      "adaptive_bm25_mmr": {
+        "v6_index": 0.459,
+        "v7min_index": 0.2923
+      }
+    },
+    "cross_file_dep": {
+      "v6_baseline": {
+        "v6_index": 0.1538,
+        "v7min_index": 0.0
+      },
+      "adaptive": {
+        "v6_index": 0.1538,
+        "v7min_index": 0.0
+      },
+      "adaptive_bm25": {
+        "v6_index": 0.4615,
+        "v7min_index": 0.7692
+      },
+      "adaptive_bm25_mmr": {
+        "v6_index": 0.4615,
+        "v7min_index": 0.7692
+      }
+    },
+    "function_locate": {
+      "v6_baseline": {
+        "v6_index": 0.0,
+        "v7min_index": 0.0
+      },
+      "adaptive": {
+        "v6_index": 0.0,
+        "v7min_index": 0.0
+      },
+      "adaptive_bm25": {
+        "v6_index": 0.1667,
+        "v7min_index": 0.8333
+      },
+      "adaptive_bm25_mmr": {
+        "v6_index": 0.1667,
+        "v7min_index": 0.8333
+      }
+    },
+    "impact_analysis": {
+      "v6_baseline": {
+        "v6_index": 0.0176,
+        "v7min_index": 0.0472
+      },
+      "adaptive": {
+        "v6_index": 0.0083,
+        "v7min_index": 0.0472
+      },
+      "adaptive_bm25": {
+        "v6_index": 0.2527,
+        "v7min_index": 0.2256
+      },
+      "adaptive_bm25_mmr": {
+        "v6_index": 0.2527,
+        "v7min_index": 0.2256
+      }
+    }
+  },
+  "per_question_worst10": [
+    {
+      "id": "q002",
+      "category": "call_chain",
+      "gt_files": [
+        "_compat.py:254",
+        "param_functions.py:11",
+        "_compat.py:614",
+        "_compat.py:640",
+        "param_functions.py:1906"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q004",
+      "category": "call_chain",
+      "gt_files": [
+        "_compat.py:276",
+        "utils.py:63"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q006",
+      "category": "call_chain",
+      "gt_files": [
+        "_compat.py:119",
+        "exceptions.py:167",
+        "_compat.py:136",
+        "encoders.py:102"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q008",
+      "category": "call_chain",
+      "gt_files": [
+        "exceptions.py:143",
+        "utils.py:205",
+        "applications.py:1056",
+        "applications.py:1175"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q013",
+      "category": "call_chain",
+      "gt_files": [
+        "_compat.py:544"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q014",
+      "category": "cross_file_dep",
+      "gt_files": [
+        "models.py:338"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q016",
+      "category": "cross_file_dep",
+      "gt_files": [
+        "encoders.py:102"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q019",
+      "category": "cross_file_dep",
+      "gt_files": [
+        "models.py:15"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q021",
+      "category": "cross_file_dep",
+      "gt_files": [
+        "cli.py:8",
+        "cli.py:2"
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    },
+    {
+      "id": "q024",
+      "category": "cross_file_dep",
+      "gt_files": [],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0
+    }
+  ]
+}

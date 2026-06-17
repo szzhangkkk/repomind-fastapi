@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "model": "deepseek-chat",
+    "total_questions": 1,
+    "total_score": 3,
+    "max_score": 3,
+    "average_score": 3.0,
+    "by_category": {
+      "call_chain": {
+        "count": 1,
+        "total": 3,
+        "max": 3,
+        "average": 3.0
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "q001",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,get_dependant() (dependencies/utils.py:257) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "在 FastAPI 源码中，`get_dependant()` 函数被调用后，会依次执行以下关键步骤：\n\n1. **获取路径参数名称**：\n   - `path_param_names = get_path_param_names(path)`：从路径字符串中提取所有路径参数的名称。\n\n2. **获取端点签名**：\n   - `endpoint_signature = get_typed_signature(call)`：使用 `inspect.signature()` 获取目标函数的类型签名。\n\n3. **解析参数签名**：\n   - `signature_params = endpoint_signature.parameters`：获取函数参数的详细信息。\n\n4. **创建 `Dependant` 对象**：\n   - `dependant = Dependant(\n       call=call,\n       name=name,\n       path=path,\n       security_scopes=security_scopes,\n       use_cache=use_cache,\n   )`：初始化一个 `Dependant` 对象，包含函数调用、名称、路径、安全范围和缓存设置。\n\n5. **遍历参数并分析依赖关系**：\n   - `for param_name, param in signature_params.items():`：遍历每个参数。\n   - `is_path_param = param_name in path_param_names`：判断参数是否是路径参数。\n   - `param_details = analyze_param(...)`：分析参数的详细信息，包括依赖项、类型注解和默认值。\n   - 如果参数有依赖项，则递归调用 `get_param_sub_dependant()` 来处理子依赖项，并将其添加到 `dependant.dependencies` 列表中。\n   - 如果参数不是依赖项，则检查是否需要将其添加到 `dependant` 的非字段参数列表中。\n   - 如果参数是字段参数（如请求体），则将其添加到 `dependant.body_params` 列表中；否则，将其添加到 `dependant.fields` 列表中。\n\n6. **返回 `Dependant` 对象**：\n   - `return dependant`：返回构建完成的 `Dependant` 对象。\n\n这些步骤确保了 FastAPI 能够正确解析和处理函数的依赖关系，从而支持复杂的 API 设计和验证。",
+      "score": 3,
+      "reason": "模型回答完全覆盖了参考答案中的所有关键点，包括调用的函数名、调用顺序和主要的调用链。"
+    }
+  ]
+}

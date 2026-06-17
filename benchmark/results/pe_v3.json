@@ -1,0 +1,437 @@
+{
+  "summary": {
+    "model": "deepseek-chat",
+    "total_questions": 50,
+    "total_score": 74,
+    "max_score": 150,
+    "average_score": 1.48,
+    "by_category": {
+      "call_chain": {
+        "count": 13,
+        "total": 5,
+        "max": 39,
+        "average": 0.38
+      },
+      "cross_file_dep": {
+        "count": 13,
+        "total": 22,
+        "max": 39,
+        "average": 1.69
+      },
+      "function_locate": {
+        "count": 12,
+        "total": 29,
+        "max": 36,
+        "average": 2.42
+      },
+      "impact_analysis": {
+        "count": 12,
+        "total": 18,
+        "max": 36,
+        "average": 1.5
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "q001",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,get_dependant() (dependencies/utils.py:257) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_flat_dependant()(dependencies/utils.py:169)\n步骤2: 调用 get_flat_params()(dependencies/utils.py:136)\n步骤3: 调用 Dependant()(dependencies/models.py:15)\n步骤4: 调用 dependant.query_params.extend()\n步骤5: 调用 dependant.header_params.extend()\n步骤6: 调用 dependant.cookie_params.extend()",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案中列出了6个关键步骤：get_path_param_names()、get_typed_signature()、Dependant()、analyze_param()、get_param_sub_dependant()、add_non_field_param_to_dependency()。而模型回答中提到的get_flat_dependant()、get_flat_params()、dependant.query_params.extend()等函数和操作均不在参考答案中，且调用顺序和内容完全错误，未覆盖任何参考答案中的关键点。"
+    },
+    {
+      "id": "q002",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,analyze_param() (dependencies/utils.py:340) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_annotation_from_field_info()(dependencies/utils.py:356)\n步骤2: 调用 get_field_info()(dependencies/utils.py:362)\n步骤3: 调用 is_scalar_field()(dependencies/utils.py:370)\n步骤4: 调用 is_scalar_sequence_field()(dependencies/utils.py:376)\n步骤5: 调用 get_param_sub_dependant()(dependencies/utils.py:382)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案列出了6个关键步骤：copy_field_info()、lenient_issubclass()、Path()、is_uploadfile_or_nonable_uploadfile_annotation()、is_uploadfile_sequence_annotation()、File()，这些调用均位于_compat.py和param_functions.py中。而模型回答列出了5个完全不同的步骤：get_annotation_from_field_info()、get_field_info()、is_scalar_field()、is_scalar_sequence_field()、get_param_sub_dependant()，且所有调用都位于dependencies/utils.py中。模型回答未覆盖参考答案中的任何一个关键点，属于完全错误。"
+    },
+    {
+      "id": "q003",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,solve_dependencies() (dependencies/utils.py:562) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_flat_dependant()(dependencies/utils.py:169)\n步骤2: 调用 get_flat_params()(dependencies/utils.py:136)\n步骤3: 调用 solve_param()(dependencies/utils.py:412)\n步骤4: 调用 solve_body()(dependencies/utils.py:480)\n步骤5: 调用 solve_depends()(dependencies/utils.py:520)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案中列出的关键步骤为：1. 调用 Response()(starlette.responses)；2. 调用 get_dependant()(dependencies/utils.py:257)；3. 调用 solve_dependencies()(dependencies/utils.py:562)；4. 调用 is_gen_callable()(dependencies/utils.py:536)；5. 调用 is_async_gen_callable()(dependencies/utils.py:529)；6. 调用 solve_generator()(dependencies/utils.py:543)。而模型回答中列出的函数（get_flat_dependant、get_flat_params、solve_param、solve_body、solve_depends）均不在参考答案中，且行号、函数名完全错误，调用链顺序也不一致。因此属于完全错误。"
+    },
+    {
+      "id": "q004",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,get_body_field() (dependencies/utils.py:912) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_flat_dependant()(dependencies/utils.py:169)\n步骤2: 调用 get_field_info()(dependencies/utils.py:88)\n步骤3: 调用 create_model_field()(utils.py:63)\n步骤4: 调用 ModelField.__init__()(dependencies/fields.py:15)",
+      "score": 1,
+      "reason": "模型回答仅覆盖了参考答案中的1个关键点（调用 create_model_field()），缺失了2个关键步骤（调用 create_body_model() 和 BodyFieldInfo()）。此外，模型回答中包含了参考答案未提及的步骤（get_flat_dependant()、get_field_info()、ModelField.__init__()），这些步骤不属于参考答案指定的调用链，且顺序与参考答案不一致。整体覆盖关键点不足60%，存在明显遗漏。"
+    },
+    {
+      "id": "q005",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,jsonable_encoder() (encoders.py:102) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 _is_custom_encoder()(encoders.py:45)\n步骤2: 调用 _encode_by_type()(encoders.py:78)\n步骤3: 调用 _encode_by_type()(encoders.py:78)\n步骤4: 调用 _encode_by_type()(encoders.py:78)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案列出了6个关键步骤：custom_encoder、encoder_instance、jsonable_encoder自身、ENCODERS_BY_TYPE、encoder、vars，而模型回答虚构了不存在的函数名（_is_custom_encoder、_encode_by_type）和行号（45、78），且调用顺序和内容均与参考答案无关。模型回答未覆盖任何参考答案中的关键点，属于完全错误。"
+    },
+    {
+      "id": "q006",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,serialize_response() (routing.py:143) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 jsonable_encoder()(encoders.py:42)\n步骤2: 调用 _prepare_response_content()(routing.py:128)\n步骤3: 调用 _validate_response_data()(routing.py:135)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案中 serialize_response() 的调用链关键步骤包括：validate()(_compat.py:119)、run_in_threadpool()(外部: starlette.concurrency)、ResponseValidationError()(exceptions.py:167)、serialize()(_compat.py:136)、jsonable_encoder()(encoders.py:102)。而模型回答列出了 jsonable_encoder()(encoders.py:42)、_prepare_response_content()(routing.py:128)、_validate_response_data()(routing.py:135)，这些函数名、行号、调用顺序均与参考答案不一致，且未覆盖任何参考答案中的关键点，属于完全错误。"
+    },
+    {
+      "id": "q007",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,get_request_handler() (routing.py:217) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 solve_dependencies()(dependencies/utils.py:257)\n步骤2: 调用 run_endpoint_function()(routing.py:204)\n步骤3: 调用 serialize_response()(routing.py:143)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案明确指出 get_request_handler() 是一个工厂函数，构建并返回 async def app(request) 闭包，核心步骤包括判断协程、判断 body_field 类型、解析 actual_response_class、构建 app 闭包等。而模型回答列出了 solve_dependencies()、run_endpoint_function()、serialize_response() 等函数调用，这些是请求处理流程中后续步骤，并非 get_request_handler() 内部的关键步骤。模型回答提供了错误的函数名和调用链，与参考答案无关。"
+    },
+    {
+      "id": "q008",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,类 APIRouter.include_router() (routing.py:1120) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_value_or_default()(utils.py:205)\n步骤2: 调用 fastapi_args()(routing.py:1187)\n步骤3: 调用 add_api_route()(applications.py:1056)\n步骤4: 调用 APIRoute()(routing.py:396)\n步骤5: 调用 get_dependant()(dependencies/utils.py:257)",
+      "score": 1,
+      "reason": "模型回答覆盖了参考答案中的部分关键点（步骤3: add_api_route()），但存在明显遗漏和错误：1) 遗漏了参考答案中的步骤1（FastAPIError()）、步骤4（add_route()）、步骤5（add_api_websocket_route()）、步骤6（add_websocket_route()）；2) 模型回答中的步骤1（get_value_or_default()）在参考答案中是步骤2，顺序正确但缺少前置步骤；3) 模型回答中的步骤2（fastapi_args()）、步骤4（APIRoute()）、步骤5（get_dependant()）不在参考答案中，属于编造的不存在调用。整体覆盖率低于60%，核心调用链不完整。"
+    },
+    {
+      "id": "q009",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,is_pv1_scalar_field() (_compat.py:394) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 field_info_from_field()(_compat.py:254)\n步骤2: 调用 isinstance()(Python内置)\n步骤3: 调用 field_info_from_field()(_compat.py:254)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案明确指出调用链为：lenient_issubclass() → field_annotation_is_sequence() → is_pv1_scalar_field()，而模型回答中出现了不存在的函数 field_info_from_field() 和 Python 内置函数 isinstance()，且调用顺序和函数名均错误，未覆盖任何参考答案中的关键点。"
+    },
+    {
+      "id": "q010",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,get_missing_field_error() (_compat.py:510) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 ErrorWrapper()(pydantic/error_wrappers.py:行号)\n步骤2: 调用 MissingError()(pydantic/errors.py:行号)\n步骤3: 调用 ValidationError()(pydantic/error_wrappers.py:行号)\n步骤4: 调用 RequestErrorModel()(fastapi/exceptions.py:行号)",
+      "score": 1,
+      "reason": "模型回答覆盖了参考答案中的前3个关键步骤（ErrorWrapper、MissingError、ValidationError），但第4步错误地写成了RequestErrorModel()，而参考答案要求的是errors()(exceptions.py:153)。这属于明显遗漏和错误，导致只覆盖了约60%的关键点，因此评为1分。"
+    },
+    {
+      "id": "q011",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,field_annotation_is_scalar_sequence() (_compat.py:586) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_origin()(_compat.py:586)\n步骤2: 调用 is_union_origin()(_compat.py:587)\n步骤3: 调用 is_scalar_sequence_field()(_compat.py:589)",
+      "score": 0,
+      "reason": "模型回答与参考答案完全不符。参考答案中 field_annotation_is_scalar_sequence() 的调用链应包含：1) field_annotation_is_scalar() 2) field_annotation_is_sequence() 3) 递归处理 Union 类型。而模型回答给出了 get_origin()、is_union_origin()、is_scalar_sequence_field() 等不存在的函数名，且行号引用错误（586行是函数定义行，不是调用行），属于完全错误的调用链。"
+    },
+    {
+      "id": "q012",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,is_bytes_sequence_annotation() (_compat.py:625) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_origin()(_compat.py:622)",
+      "score": 1,
+      "reason": "模型回答仅提到了一个步骤（调用 get_origin()），但该步骤并非参考答案中的关键步骤。参考答案要求的关键步骤是：1) 调用 field_annotation_is_sequence() 判断是否为序列类型；2) 调用 is_bytes_or_nonable_bytes_annotation() 验证元素是否为 bytes；3) 递归调用自身处理 Union 成员。模型回答缺失了所有三个关键步骤，只覆盖了不到 60% 的关键点，且提供的函数名和行号与参考答案不符。"
+    },
+    {
+      "id": "q013",
+      "category": "call_chain",
+      "question": "在 FastAPI 源码中,is_uploadfile_sequence_annotation() (_compat.py:640) 被调用后,会依次执行哪些关键步骤?请列出主要的调用链。",
+      "model_answer": "步骤1: 调用 get_origin()(_compat.py:620)\n步骤2: 调用 is_uploadfile_sequence_annotation()(_compat.py:640)",
+      "score": 1,
+      "reason": "模型回答仅提到了调用 is_uploadfile_sequence_annotation() 自身（步骤2），但这是题目已给出的起始函数，并非后续关键步骤。缺失了参考答案中的三个关键步骤：1) 调用 field_annotation_is_sequence() 判断序列类型；2) 调用 is_uploadfile_or_nonable_uploadfile_annotation() 验证元素是否为 UploadFile；3) 递归处理 Union 类型成员。同时，模型回答中步骤1的 get_origin() 调用不在参考答案中，属于错误信息。整体覆盖关键点不足60%，且存在明显错误。"
+    },
+    {
+      "id": "q014",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,SecurityBase 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: security/base.py:5\n类型: class SecurityBase\n被导入文件(2个): dependencies/models.py(行5), dependencies/utils.py(行56)",
+      "score": 1,
+      "reason": "模型回答只覆盖了参考答案中的少数关键点：定义位置错误（security/base.py:5 应为 openapi/models.py:338），被导入文件只列出了2个（dependencies/models.py 和 dependencies/utils.py），遗漏了5个文件（security/api_key.py、security/base.py、security/http.py 以及 openapi/models.py 自身）。虽然类型正确，但核心事实错误且遗漏严重，仅部分正确。"
+    },
+    {
+      "id": "q015",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,DefaultPlaceholder 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: _compat.py:15\n类型: class DefaultPlaceholder\n被导入文件(2个): applications.py(行17), openapi/utils.py(行17)",
+      "score": 1,
+      "reason": "模型回答只覆盖了参考答案中的少数关键点：被导入文件仅列出2个（applications.py和openapi/utils.py），遗漏了routing.py和utils.py；定义位置错误（_compat.py:15 vs datastructures.py:176），属于完全错误的信息。整体正确信息不足60%，但提到了部分正确的导入文件，因此评1分。"
+    },
+    {
+      "id": "q016",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,jsonable_encoder 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: encoders.py:1\n类型: def jsonable_encoder\n被导入文件(3个): exception_handlers.py(行1), openapi/docs.py(行4), routing.py(行143)",
+      "score": 1,
+      "reason": "模型回答正确指出了定义文件 encoders.py，但行号错误（1 vs 102），遗漏了关键点：功能说明、被导入文件 openapi/utils.py，且 routing.py 行号错误（143 vs 44）。仅覆盖了 4 个关键点中的 1 个（定义文件），属于部分正确。"
+    },
+    {
+      "id": "q017",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,RequestValidationError 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: exceptions.py:157\n类型: class RequestValidationError\n被导入文件(3个): applications.py(行23), exception_handlers.py(行2), routing.py(行45)",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义位置（exceptions.py:157）、类型（class RequestValidationError）、被导入文件（applications.py行23、exception_handlers.py行2、routing.py行45），且行号和文件信息准确无误。"
+    },
+    {
+      "id": "q018",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,WebSocketRequestValidationError 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: exceptions.py:163\n类型: class WebSocketRequestValidationError\n被导入文件(3个): applications.py(行23), exception_handlers.py(行2), routing.py(行45)",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义位置（exceptions.py:163）、类型（class WebSocketRequestValidationError）、被导入文件（applications.py行23、exception_handlers.py行2、routing.py行45），且行号、文件名、数量均正确，无遗漏或偏差。"
+    },
+    {
+      "id": "q019",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,Dependant 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: dependencies/models.py:15\n类型: class Dependant\n被导入文件(3个): dependencies/utils.py(行54), openapi/utils.py(行18), routing.py(行34)",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义位置（dependencies/models.py:15）、类型（class Dependant）、被导入文件（dependencies/utils.py行54、openapi/utils.py行18、routing.py行34）均正确无误，无遗漏或偏差。"
+    },
+    {
+      "id": "q020",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,is_body_allowed_for_status_code 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: utils.py:42\n类型: def is_body_allowed_for_status_code\n被导入文件(3个): exception_handlers.py(行3), openapi/utils.py(行30), routing.py(行52)",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义文件为 utils.py，行号为 42；函数名为 is_body_allowed_for_status_code；被导入文件包括 exception_handlers.py（行3）、openapi/utils.py（行30）、routing.py（行52），数量为3个，且行号均正确。无遗漏或错误，因此评分为3分。"
+    },
+    {
+      "id": "q021",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,main 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: __main__.py:1\n类型: 模块 main\n被导入文件(2个): __main__.py(行1), cli.py(行2)",
+      "score": 0,
+      "reason": "模型回答完全错误。参考答案明确指出 main 定义在 cli.py:8，而模型回答错误地认为定义在 __main__.py:1；参考答案指出 main 是一个函数（函数签名: main()），而模型回答错误地描述为“模块 main”；模型回答虽然列出了两个被导入文件，但定义位置和类型完全错误，属于完全错误的回答。"
+    },
+    {
+      "id": "q022",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,Default 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: dependencies/utils.py:15\n类型: class Default\n被导入文件(2个): applications.py(行17), routing.py(行33)",
+      "score": 1,
+      "reason": "模型回答中，被导入文件(applications.py和routing.py)及其行号正确，匹配了参考答案中的2个关键点。但定义位置错误：参考答案为datastructures.py:197，模型回答为dependencies/utils.py:15，完全错误；且未提及功能说明。因此只覆盖了少数关键点（约40%），属于部分正确。"
+    },
+    {
+      "id": "q023",
+      "category": "cross_file_dep",
+      "question": "在 FastAPI 源码中,generate_unique_id 定义在哪个文件的哪一行?它被哪些文件导入使用?",
+      "model_answer": "定义位置: utils.py:179\n类型: def generate_unique_id\n被导入文件(2个): applications.py(行33), routing.py(行52)",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义位置（utils.py:179）、函数签名（def generate_unique_id）、被导入文件（applications.py行33、routing.py行52），且事实信息准确无误。"
+    },
+    {
+      "id": "q024",
+      "category": "cross_file_dep",
+      "question": "文件 dependencies/utils.py 从其他 FastAPI 模块中导入了哪些关键符号?请列出至少 5 个并说明其来源。",
+      "model_answer": "定义位置: dependencies/utils.py:1\n类型: import inspect\n被导入文件: 无\n\n定义位置: dependencies/utils.py:2\n类型: from contextlib import AsyncExitStack, contextmanager\n被导入文件: 无\n\n定义位置: dependencies/utils.py:3\n类型: from copy import copy, deepcopy\n被导入文件: 无\n\n定义位置: dependencies/utils.py:5\n类型: from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union\n被导入文件: 无\n\n定义位置: dependencies/utils.py:7\n类型: from fastapi import params\n被导入文件: 无\n\n定义位置: dependencies/utils.py:8\n类型: from fastapi.dependencies.models import Dependant, SecurityRequirement\n被导入文件: 无\n\n定义位置: dependencies/utils.py:9\n类型: from fastapi.security.base import SecurityBase\n被导入文件: 无\n\n定义位置: dependencies/utils.py:10\n类型: from fastapi.security.oauth2 import OAuth2, SecurityScopes\n被导入文件: 无\n\n定义位置: dependencies/utils.py:11\n类型: from fastapi.utils import create_cloned_field, get_value_or_default\n被导入文件: 无\n\n定义位置: dependencies/utils.py:12\n类型: from pydantic import BaseModel, Required\n被导入文件: 无\n\n定义位置: dependencies/utils.py:13\n类型: from pydantic.fields import FieldInfo, ModelField, Undefined\n被导入文件: 无\n\n定义位置: dependencies/utils.py:14\n类型: from starlette.background import BackgroundTasks\n被导入文件: 无\n\n定义位置: dependencies/utils.py:15\n类型: from starlette.datastructures import FormData, Headers, QueryParams, UploadFile\n被导入文件: 无\n\n定义位置: dependencies/utils.py:16\n类型: from starlette.requests import Request\n被导入文件: 无\n\n定义位置: dependencies/utils.py:17\n类型: from starlette.responses import Response\n被导入文件: 无\n\n定义位置: dependencies/utils.py:18\n类型: from starlette.websockets import WebSocket\n被导入文件: 无",
+      "score": 2,
+      "reason": "模型回答列出了 dependencies/utils.py 中所有导入语句，包括从 FastAPI 模块导入的符号。与参考答案相比：\n- 匹配的关键点：从 fastapi 导入 params（第7行）；从 pydantic 导入 Required（第12行）、ModelField 和 Undefined（第13行）；从 starlette.background 导入 BackgroundTasks（第14行）。\n- 缺失的关键点：未提及从 fastapi/_compat.py 导入 PYDANTIC_V2、ErrorWrapper（参考答案中列出但模型回答中未出现）；未提及从 fastapi/concurrency.py 导入 asynccontextmanager、contextmanager_in_threadpool（模型回答中无对应导入）。\n- 额外信息：模型回答列出了许多非参考答案要求的导入（如 from fastapi.dependencies.models、from fastapi.security.base 等），这些不影响核心评分，但未覆盖参考答案中所有关键符号（如 PYDANTIC_V2、ErrorWrapper、asynccontextmanager、contextmanager_in_threadpool）。\n- 总体：覆盖了参考答案中约 60% 的关键符号（params、Required、ModelField、Undefined、BackgroundTasks），但遗漏了 4 个关键符号，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q025",
+      "category": "cross_file_dep",
+      "question": "文件 routing.py 从其他 FastAPI 模块中导入了哪些关键符号?请列出至少 5 个并说明其来源。",
+      "model_answer": "定义位置: routing.py:1\n类型: import asyncio\n被导入文件(0个): 无\n\n定义位置: routing.py:2\n类型: import dataclasses\n被导入文件(0个): 无\n\n定义位置: routing.py:3\n类型: import email.message\n被导入文件(0个): 无",
+      "score": 0,
+      "reason": "模型回答完全偏离了题目要求。题目要求列出从其他 FastAPI 模块导入的关键符号及其来源，但模型回答仅列出了 Python 标准库的 import 语句（asyncio、dataclasses、email.message），未提及任何 FastAPI 内部模块的导入符号（如 params、ModelField、Undefined、Default、Dependant 等），与参考答案完全无关。"
+    },
+    {
+      "id": "q026",
+      "category": "cross_file_dep",
+      "question": "文件 openapi/utils.py 从其他 FastAPI 模块中导入了哪些关键符号?请列出至少 5 个并说明其来源。",
+      "model_answer": "定义位置: openapi/utils.py:18\n类型: import Dependant\n来源文件: dependencies/models.py:15\n\n定义位置: openapi/utils.py:19\n类型: import get_flat_dependant\n来源文件: dependencies/utils.py:169\n\n定义位置: openapi/utils.py:20\n类型: import get_flat_params\n来源文件: dependencies/utils.py:136\n\n定义位置: openapi/utils.py:21\n类型: import solve_dependencies\n来源文件: dependencies/utils.py:257\n\n定义位置: openapi/utils.py:22\n类型: import get_openapi_operation_metadata\n来源文件: openapi/utils.py:192\n\n定义位置: openapi/utils.py:23\n类型: import get_openapi_path\n来源文件: openapi/utils.py:285\n\n定义位置: openapi/utils.py:24\n类型: import _get_openapi_operation_parameters\n来源文件: openapi/utils.py:94\n\n定义位置: openapi/utils.py:25\n类型: import _get_openapi_operation_request_body\n来源文件: openapi/utils.py:150",
+      "score": 1,
+      "reason": "模型回答列出了8个导入符号及其来源，但其中只有1个（Dependant from dependencies/models.py）与参考答案匹配。参考答案要求的是从其他FastAPI模块导入的关键符号，包括：从fastapi.py导入routing；从fastapi/_compat.py导入GenerateJsonSchema, JsonSchemaValue, ModelField, Undefined, get_compat_model_name_map；从fastapi/datastructures.py导入DefaultPlaceholder；从fastapi/dependencies/models.py导入Dependant。模型回答中其余7个导入（如get_flat_dependant、get_flat_params等）均不在参考答案中，且未提及routing、GenerateJsonSchema等关键符号。因此，模型回答仅覆盖了参考答案中约12.5%的关键点（1/8），属于明显遗漏，评分1分。"
+    },
+    {
+      "id": "q027",
+      "category": "function_locate",
+      "question": "FastAPI 中 openapi 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:966\n类型: 类 FastAPI 的方法\n参数: (self)\n职责: Generate the OpenAPI schema of the application. This is called by FastAPI internally.\n内部调用了: get_openapi",
+      "score": 3,
+      "reason": "模型回答完全覆盖了参考答案中的所有关键点：定义位置（applications.py:966）、类型（类 FastAPI 的方法）、参数（(self)）、职责（Generate the OpenAPI schema of the application. This is called by FastAPI internally.）、内部调用（get_openapi）。所有事实信息准确，无遗漏或偏差。"
+    },
+    {
+      "id": "q028",
+      "category": "function_locate",
+      "question": "FastAPI 中 websocket 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1190\n类型: 类 FastAPI 的方法\n参数: (self, path, name, dependencies)\n职责: Decorate a WebSocket function.\n内部调用了: self.add_api_websocket_route",
+      "score": 3,
+      "reason": "模型回答完全覆盖了参考答案中的所有关键点：定义位置(applications.py:1190)、类型(类 FastAPI 的方法)、参数列表((self, path, name, dependencies))、职责(Decorate a WebSocket function.)、内部调用(self.add_api_websocket_route)。所有事实信息准确，无遗漏或偏差。"
+    },
+    {
+      "id": "q029",
+      "category": "function_locate",
+      "question": "FastAPI 中 include_router 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1255\n类型: 类 FastAPI 的方法\n参数: (self, router, prefix, tags, dependencies)\n职责: Include an APIRouter in the same app.\n内部调用了: self.router.include_router",
+      "score": 3,
+      "reason": "模型回答完全匹配了参考答案中的所有关键点：定义位置（applications.py:1255）、类型（类 FastAPI 的方法）、参数列表（self, router, prefix, tags, dependencies）、职责描述（Include an APIRouter in the same app）以及内部调用（self.router.include_router）。没有遗漏或错误，因此评分为3分。"
+    },
+    {
+      "id": "q030",
+      "category": "function_locate",
+      "question": "FastAPI 中 get 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP GET operation.\n内部调用了: self.router.get",
+      "score": 3,
+      "reason": "模型回答完全匹配参考答案中的所有关键点：定义位置（applications.py:1460）、类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP GET operation）。额外补充了内部调用 self.router.get，属于正确且不扣分的补充信息。"
+    },
+    {
+      "id": "q031",
+      "category": "function_locate",
+      "question": "FastAPI 中 put 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP PUT operation.\n内部调用了: self.router.put",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP PUT operation）以及内部调用（self.router.put）均正确匹配。但定义位置的行号（1460）与参考答案（1833）偏差超过 ±5 行，属于事实信息错误，因此扣 1 分档次，评为基本正确（2 分）。"
+    },
+    {
+      "id": "q032",
+      "category": "function_locate",
+      "question": "FastAPI 中 post 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP POST operation.\n内部调用了: self.router.post",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP POST operation）和内部调用（self.router.post）均正确匹配。但存在一处偏差：参考答案中定义行号为 2211，模型回答为 1460，偏差超过 ±5 行，属于事实信息不准确。根据评分规则，行号偏差扣分，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q033",
+      "category": "function_locate",
+      "question": "FastAPI 中 delete 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP DELETE operation.\n内部调用了: self.router.delete",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP DELETE operation）以及内部调用（self.router.delete）均正确匹配。但存在一处偏差：参考答案中定义行号为 2589，模型回答给出的是 1460，行号偏差超过 ±5 行，属于事实信息不准确。根据评分规则，行号偏差扣分，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q034",
+      "category": "function_locate",
+      "question": "FastAPI 中 options 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP OPTIONS operation.\n内部调用了: self.router.options",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP OPTIONS operation）以及内部调用（self.router.options）均正确匹配。但存在一处偏差：参考答案中定义位置为 applications.py:2962，而模型回答写为 applications.py:1460，行号偏差超过 ±5 行，属于事实信息错误。根据评分规则，行号偏差算 1 处小偏差，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q035",
+      "category": "function_locate",
+      "question": "FastAPI 中 head 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP HEAD operation.\n内部调用了: self.router.head",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP HEAD operation）以及内部调用（self.router.head）均正确匹配。但存在一处偏差：参考答案中定义行号为 3335，模型回答为 1460，偏差超过 ±5 行，属于事实信息不准确。根据评分规则，行号偏差算 1 处小偏差，因此扣 1 分档次，评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q036",
+      "category": "function_locate",
+      "question": "FastAPI 中 patch 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP PATCH operation.\n内部调用了: self.router.patch",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP PATCH operation）以及内部调用（self.router.patch）均正确。但存在一处明显偏差：定义位置行号错误，参考答案为 applications.py:3708，模型回答为 applications.py:1460，偏差超过 ±5 行，属于事实信息不准确。根据评分规则，行号偏差算 1 处小偏差，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q037",
+      "category": "function_locate",
+      "question": "FastAPI 中 trace 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:1460\n类型: 类 FastAPI 的方法\n参数: (self, path, response_model, status_code, tags)\n职责: Add a path operation using an HTTP TRACE operation.\n内部调用了: self.router.trace",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点：类型（类 FastAPI 的方法）、参数列表（self, path, response_model, status_code, tags）、职责描述（Add a path operation using an HTTP TRACE operation）以及内部调用（self.router.trace）均正确。但存在一处明显偏差：定义位置的行号，参考答案为 applications.py:4086，模型回答为 applications.py:1460，偏差超过 ±5 行，属于事实信息错误。根据评分规则，行号偏差超过 ±5 行算错误，且仅此一处小偏差，核心结论正确，因此评为 2 分（基本正确）。"
+    },
+    {
+      "id": "q038",
+      "category": "function_locate",
+      "question": "FastAPI 中 on_event 是什么类 FastAPI 的方法?它定义在哪个文件、哪一行?参数列表是什么?它的主要职责是什么?",
+      "model_answer": "定义位置: applications.py:4476\n类型: 类 FastAPI 的方法\n参数: (self, event_type)\n职责: Add an event handler for the application.\n内部调用了: self.router.on_event",
+      "score": 3,
+      "reason": "模型回答完全覆盖了参考答案中的所有关键点：定义位置(applications.py:4476)、类型(类 FastAPI 的方法)、参数列表((self, event_type))、职责(Add an event handler for the application)、内部调用(self.router.on_event)。虽然模型回答未提及'on_event is deprecated, use lifespan event handlers instead'这一额外信息，但该信息属于参考答案中的补充说明，不影响核心关键点的完整性，因此不扣分。"
+    },
+    {
+      "id": "q039",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 dependencies/utils.py 中,将 get_dependant() 的返回类型从 Dependant 改为一个新的 ResolvedDependency 类。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: routing.py:403 APIWebSocketRoute.__init__() — 直接调用; routing.py:552 APIRoute.__init__() — 直接调用; openapi/utils.py:94 _get_openapi_operation_parameters() — 通过import使用Dependant; openapi/utils.py:77 get_openapi_security_definitions() — 通过import使用Dependant; routing.py:204 run_endpoint_function() — 通过import使用Dependant; routing.py:217 get_request_handler() — 通过import使用Dependant\n原因: 这些位置通过 import 或函数调用直接依赖 get_dependant 的返回类型 Dependant\n修改要点: 上述函数需确保参数/返回值与修改后的 ResolvedDependency 兼容",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的两个核心关键点：routing.py:403 APIWebSocketRoute.__init__() 和 routing.py:552 APIRoute.__init__()，并正确说明了原因和修改要点。但模型额外列出了 openapi/utils.py:94、openapi/utils.py:77、routing.py:204、routing.py:217 四个位置，这些位置在参考答案中并未提及，且题目要求分析的是 get_dependant() 返回类型从 Dependant 改为 ResolvedDependency 的影响，而参考答案明确只列出了直接调用 get_dependant 的位置。模型回答中额外列出的位置可能依赖于 Dependant 类本身而非 get_dependant 的返回类型，属于过度推断或错误扩展，因此存在明显偏差。根据评分规则，覆盖了大部分关键点（2/2），但有 1-2 处小偏差（额外列出不相关位置），故评为 2 分。"
+    },
+    {
+      "id": "q040",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 dependencies/models.py 中,在 Dependant dataclass 中新增一个字段 timeout: float = 30.0。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: dependencies/utils.py:169 get_flat_dependant() — 直接调用; dependencies/utils.py:257 get_dependant() — 直接调用; openapi/utils.py:77 get_openapi_security_definitions() — 通过import使用Dependant; openapi/utils.py:94 _get_openapi_operation_parameters() — 通过import使用Dependant; routing.py:204 run_endpoint_function() — 通过import使用Dependant; routing.py:217 get_request_handler() — 通过import使用Dependant\n原因: 这些位置通过import或函数调用直接依赖Dependant\n修改要点: 上述函数需确保参数/返回值与修改后的Dependant兼容",
+      "score": 3,
+      "reason": "模型回答完全覆盖了参考答案中的所有关键点：列出了所有6个受影响位置（dependencies/utils.py:169、dependencies/utils.py:257、openapi/utils.py:77、openapi/utils.py:94、routing.py:204、routing.py:217），函数名和行号完全正确，调用关系描述准确（直接调用或通过import使用Dependant），原因和修改要点表述与参考答案一致。没有遗漏或错误信息，因此评分为3分。"
+    },
+    {
+      "id": "q041",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 encoders.py 中,将 jsonable_encoder 的返回类型从 Any 改为明确的 dict。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: exception_handlers.py:20 request_validation_exception_handler() — 直接调用; exception_handlers.py:29 websocket_request_validation_exception_handler() — 直接调用; openapi/docs.py:26 get_swagger_ui_html() — 直接调用; routing.py:143 serialize_response() — 直接调用\n原因: 这些位置通过 import 或函数调用直接依赖 jsonable_encoder\n修改要点: 上述函数需确保参数/返回值与修改后的 jsonable_encoder 兼容",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的大部分关键点（4/6个受影响位置），包括exception_handlers.py:20、exception_handlers.py:29、openapi/docs.py:26，以及原因和修改要点。但遗漏了参考答案中的openapi/utils.py:77 get_openapi_security_definitions()、openapi/utils.py:94 _get_openapi_operation_parameters()、openapi/utils.py:149 get_openapi_operation_request_body()这三个关键位置，同时错误地添加了routing.py:143 serialize_response()（不在参考答案中）。根据评分规则，遗漏3个关键点属于明显缺失，但核心结论正确且覆盖了大部分内容，因此评为2分。"
+    },
+    {
+      "id": "q042",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 routing.py 中,给 serialize_response 新增一个必需参数 content_type: str。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: routing.py:217 get_request_handler() — 直接调用; routing.py:360 get_websocket_app() — 直接调用\n原因: 这些位置通过 import 或函数调用直接依赖 serialize_response\n修改要点: 上述函数需确保参数/返回值与修改后的 serialize_response 兼容",
+      "score": 1,
+      "reason": "模型回答仅覆盖了参考答案中的少数关键点。正确部分：提到了 routing.py 中的 get_request_handler() 函数（但行号 217 与参考答案的 327 不符，参考答案中 get_request_handler 定义在 217，但调用 serialize_response 的位置在 327 的闭包内）。缺失部分：未提及 serialize_response 自身定义位置（routing.py:143）需要修改签名；错误地添加了 get_websocket_app() 作为受影响位置（参考答案明确指出 serialize_response 仅在 routing.py:327 一处调用，无外部 import）；未提及从 request.headers 获取 content_type 的修改要点。整体覆盖关键点不足 60%，且存在明显错误。"
+    },
+    {
+      "id": "q043",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 dependencies/utils.py 中,修改 solve_dependencies 的返回值结构,将 errors 字段重命名为 validation_errors。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: routing.py:217 get_request_handler() — 直接调用; routing.py:360 get_websocket_app() — 直接调用; dependencies/utils.py:169 get_flat_dependant() — 直接调用; openapi/utils.py:77 get_openapi_security_definitions() — 通过 import 使用 solve_dependencies; openapi/utils.py:94 _get_openapi_operation_parameters() — 通过 import 使用 solve_dependencies\n原因: 这些位置通过 import 或函数调用直接依赖 solve_dependencies 的返回值结构\n修改要点: 上述函数需确保对 errors 字段的引用改为 validation_errors,并调整所有相关逻辑",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的两个核心关键点：routing.py:217 get_request_handler() 和 routing.py:360 get_websocket_app()，并正确说明了原因和修改要点。但模型回答额外列出了 dependencies/utils.py:169 get_flat_dependant()、openapi/utils.py:77 get_openapi_security_definitions() 和 openapi/utils.py:94 _get_openapi_operation_parameters() 三个位置，这些在参考答案中并未提及，且可能并非直接依赖 solve_dependencies 返回值结构中的 errors 字段，属于不准确或多余的补充信息。根据评分规则，额外列出可能受影响但不在 GT 中的位置不扣分，但此处可能引入错误信息，因此扣1分，评为2分。"
+    },
+    {
+      "id": "q044",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 params.py 中,给 Param.__init__ 新增一个必需参数 schema_extra: dict。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: dependencies/utils.py:257 get_dependant() — 直接调用; openapi/utils.py:94 _get_openapi_operation_parameters() — 通过 import 使用 Param; openapi/utils.py:150 _get_openapi_operation_request_body() — 通过 import 使用 Param; routing.py:396 APIRoute.__init__() — 通过 import 使用 Param; routing.py:552 APIWebSocketRoute.__init__() — 通过 import 使用 Param; _compat.py:420 create_cloned_field() — 通过 import 使用 Param\n原因: 这些位置通过 import 或函数调用直接依赖 Param 类或其子类\n修改要点: 上述函数需确保参数/返回值与修改后的 Param 兼容，所有创建 Param 实例的地方需传入 schema_extra 参数",
+      "score": 1,
+      "reason": "模型回答仅覆盖了参考答案中的少数关键点。参考答案明确指出了受影响位置是 param_functions.py:11 Path()、param_functions.py:51 Query()、encoders.py:29 Body() 以及 dependencies/utils.py:442 analyze_param()，并强调 Param 是 Path/Query/Body/Cookie/Header/File/Form 的父类，新增必需参数后子类 __init__ 调用会失败。模型回答却列出了 dependencies/utils.py:257 get_dependant()、openapi/utils.py:94 _get_openapi_operation_parameters()、openapi/utils.py:150 _get_openapi_operation_request_body()、routing.py:396 APIRoute.__init__()、routing.py:552 APIWebSocketRoute.__init__()、_compat.py:420 create_cloned_field() 等位置，这些均不在参考答案中，且未提及任何正确的子类文件或函数（如 Path、Query、Body、analyze_param）。模型回答完全遗漏了核心的继承关系和子类调用点，导致关键点覆盖率远低于60%，因此只能得1分。"
+    },
+    {
+      "id": "q045",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 routing.py 中,将 APIRoute.__init__ 中 response_model 参数的默认值从 Default(None) 改为 None。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: applications.py:1056 add_api_route() — 直接调用; applications.py:1190 add_api_websocket_route() — 直接调用; routing.py:1120 include_router() — 直接调用; openapi/utils.py:285 get_openapi_path() — 通过 import 使用 APIRoute; openapi/utils.py:94 _get_openapi_operation_parameters() — 通过 import 使用 APIRoute; openapi/utils.py:150 _get_openapi_operation_request_body() — 通过 import 使用 APIRoute\n原因: 这些位置通过 import 或函数调用直接依赖 APIRoute.__init__ 的 response_model 参数\n修改要点: 上述函数需确保传入的 response_model 参数与修改后的 APIRoute.__init__ 兼容，若原代码依赖 Default(None) 的特殊行为（如类型检查或默认值处理），需同步调整",
+      "score": 1,
+      "reason": "模型回答覆盖了参考答案中的部分关键点，但存在明显遗漏和偏差。匹配的关键点：applications.py:1056 add_api_route()（参考答案中提及applications.py:1084 add_api_route()，行号偏差在±5以内，算正确）；openapi/utils.py:285 get_openapi_path()（参考答案中为openapi/utils.py:187，行号偏差较大但函数名正确）。缺失的关键点：applications.py:768 get()（generate_unique_id_function参数类型）；applications.py中所有HTTP方法装饰器（get/post/put/patch/delete/head/options/trace/websocket + api_route/add_api_websocket_route，共12处）未完整列出；openapi/utils.py:201 generate_operation_summary()和openapi/utils.py:208 generate_operation_id()（或参考答案中的行号233/201/186）未提及；模型回答中额外列出的routing.py:1120 include_router()、openapi/utils.py:94和150不在参考答案中，且未说明原因分析中关于DefaultPlaceholder语义的关键点。整体覆盖关键点少于60%，核心结论不完整。"
+    },
+    {
+      "id": "q046",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 dependencies/utils.py 中,将 analyze_param 的返回类型从 ParamDetails 改为 tuple。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: dependencies/utils.py:257 get_dependant() — 直接调用; dependencies/utils.py:169 get_flat_dependant() — 直接调用; dependencies/utils.py:136 get_flat_params() — 直接调用\n原因: 这些位置通过函数调用直接依赖 analyze_param\n修改要点: 上述函数需确保参数/返回值与修改后的 analyze_param 兼容",
+      "score": 1,
+      "reason": "模型回答只覆盖了参考答案中的少数关键点(<60%)。正确点：提到了dependencies/utils.py:257 get_dependant()是直接调用analyze_param的位置。但存在明显遗漏：缺少get_param_sub_dependant()、solve_dependencies()、routing.py中的APIWebSocketRoute.__init__()和APIRoute.__init__()等关键下游调用者；错误地列出了get_flat_dependant()和get_flat_params()，这两个函数在参考答案中并未被列为受影响位置；行号信息也不准确（如get_dependant行号应为277而非257）。核心调用链不完整，遗漏了多个关键函数。"
+    },
+    {
+      "id": "q047",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 routing.py 中,给 get_request_handler 新增一个参数 middleware_stack: List[Middleware]。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: applications.py:1056 add_api_route() — 直接调用; routing.py:552 APIRoute.__init__() — 直接调用; routing.py:403 APIWebSocketRoute.__init__() — 直接调用\n原因: 这些位置通过函数调用直接依赖 get_request_handler\n修改要点: 上述函数需确保参数与修改后的 get_request_handler 兼容,新增 middleware_stack 参数需在调用处传递",
+      "score": 1,
+      "reason": "模型回答只覆盖了参考答案中的少数关键点(<60%)。正确部分：提到了 routing.py:403 APIWebSocketRoute 需要同步适配。但存在明显错误和遗漏：1) 错误地认为 applications.py:1056 add_api_route() 是直接调用点，而参考答案明确指出唯一调用点是 routing.py:570 APIRoute.get_route_handler()；2) 错误地认为 routing.py:552 APIRoute.__init__() 是直接调用点；3) 遗漏了核心调用点 routing.py:570 APIRoute.get_route_handler()；4) 遗漏了 routing.py:217 get_request_handler() 自身签名修改；5) 遗漏了新增参数需传递给内部 app 闭包这一关键原因。整体上虽然提到了部分正确信息，但核心调用链完全错误。"
+    },
+    {
+      "id": "q048",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 utils.py 中,将 create_model_field 的 name 参数从 str 改为 Optional[str]。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: _compat.py:420 create_cloned_field() — 直接调用; _compat.py:254 copy_field_info() — 直接调用; dependencies/utils.py:257 get_dependant() — 直接调用; dependencies/utils.py:912 get_body_field() — 直接调用; openapi/utils.py:94 _get_openapi_operation_parameters() — 直接调用; openapi/utils.py:150 _get_openapi_operation_request_body() — 直接调用; routing.py:396 APIRoute.__init__() — 直接调用; routing.py:552 APIWebSocketRoute.__init__() — 直接调用\n原因: 这些位置通过 import 或函数调用直接依赖 create_model_field\n修改要点: 上述函数需确保传入的 name 参数与修改后的 create_model_field 兼容,即允许传入 None 值",
+      "score": 1,
+      "reason": "模型回答覆盖了参考答案中的部分关键点：dependencies/utils.py:912 get_body_field() 和 routing.py:396 APIRoute.__init__()（参考答案为 routing.py:429，行号偏差在±5行内可接受）。但存在明显遗漏：缺少参考答案中的 dependencies/utils.py:340 analyze_param() 这一直接调用点。同时，模型回答额外列出了多个不在参考答案中的位置（如 _compat.py:420 create_cloned_field()、_compat.py:254 copy_field_info()、dependencies/utils.py:257 get_dependant()、openapi/utils.py:94 和 150、routing.py:552 APIWebSocketRoute.__init__()），这些可能为错误或无关信息，且未覆盖参考答案中至少60%的关键点（3个关键点中只覆盖了2个，但遗漏了核心的 analyze_param()）。因此评为1分。"
+    },
+    {
+      "id": "q049",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 dependencies/utils.py 中,删除 get_body_field 的 embed_body_fields 参数,改为从 flat_dependant 自动推断。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: routing.py:396 APIRoute.__init__() — 直接调用; routing.py:403 APIWebSocketRoute.__init__() — 直接调用; openapi/utils.py:150 _get_openapi_operation_request_body() — 直接调用\n原因: 这些位置通过 import 或函数调用直接依赖 get_body_field\n修改要点: 上述函数需确保参数/返回值与修改后的 get_body_field 兼容,移除 embed_body_fields 参数调用",
+      "score": 2,
+      "reason": "模型回答覆盖了参考答案中的核心关键点：routing.py 中 APIRoute.__init__() 的直接调用（行号偏差在±5行内，396 vs 429，可接受），以及修改要点描述正确。但模型回答额外列出了 routing.py:403 APIWebSocketRoute.__init__() 和 openapi/utils.py:150 _get_openapi_operation_request_body() 作为受影响位置，而参考答案中未包含这些，属于多余但正确的补充信息，不扣分。然而，模型回答遗漏了参考答案中明确指出的受影响位置（routing.py:429 APIRoute.__init__() 的直接调用），且未提及参考答案中的核心修改要点（移除 embed_body_fields 参数调用），导致关键点覆盖不足。根据评分规则，覆盖大部分关键点（≥60%）但存在1-2处小偏差（如行号偏差、遗漏核心修改要点），评为2分。"
+    },
+    {
+      "id": "q050",
+      "category": "impact_analysis",
+      "question": "假设要对 FastAPI 源码做如下修改:在 applications.py 中,给 FastAPI.__init__ 新增一个必需参数 api_version: str。请分析这一改动会影响哪些其他文件?需要同步修改哪些地方?",
+      "model_answer": "受影响位置: applications.py:1056 add_api_route() — 直接调用; applications.py:1190 add_api_websocket_route() — 直接调用; applications.py:1255 include_router() — 直接调用; applications.py:1460 get() — 直接调用; applications.py:4476 on_event() — 直接调用; routing.py:1120 include_router() — 通过 import 使用 FastAPI; routing.py:396 APIRoute.__init__() — 通过 import 使用 FastAPI; routing.py:552 APIWebSocketRoute.__init__() — 通过 import 使用 FastAPI\n原因: 这些位置通过 import 或函数调用直接依赖 FastAPI.__init__\n修改要点: 上述函数需确保参数/返回值与修改后的 FastAPI.__init__ 兼容,新增 api_version 参数需在所有调用处同步添加",
+      "score": 1,
+      "reason": "模型回答仅覆盖了参考答案中的少数关键点。参考答案明确指出了受影响位置包括：routing.py:605 APIRouter.__init__()、routing.py:1087 APIRouter.get() 及12处HTTP方法装饰器、applications.py:FastAPI.__init__()自身、testclient.py。模型回答却列出了applications.py中不存在的行号（如1056、1190等）和函数（如add_api_route、add_api_websocket_route等），这些在参考答案中并未提及，且与FastAPI.__init__新增必需参数的实际影响不符。模型回答提到了routing.py中的include_router()和APIRoute.__init__()，但遗漏了核心的APIRouter.__init__()和HTTP方法装饰器，以及testclient.py。整体上，模型回答提供了错误的文件名、行号和函数名，关键点覆盖率远低于60%，因此评为1分。"
+    }
+  ]
+}
