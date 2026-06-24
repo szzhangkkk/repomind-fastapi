@@ -4,34 +4,65 @@
 
 ## 环境
 
+> **硬件要求**: 仅评测只需 DeepSeek API Key (无需 GPU)。本地 FT 微调需要 NVIDIA GPU (≥8GB VRAM)。
+
 ```bash
 # Python 3.12 + venv
 cd /mnt/d/repomind-fastapi
 uv venv .venv-ft --python 3.12
 source .venv-ft/bin/activate
 
-# CUDA + PyTorch (RTX 4060, driver 577.02)
+# PyTorch + CUDA 12.1 (仅 FT 需要; 评测可跳过)
 pip install torch==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121
 
-# 依赖 (用清华源)
-pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple \
-  transformers==4.48.3 peft bitsandbytes datasets accelerate trl==0.15.2 \
-  pymilvus sentence-transformers openai python-dotenv
+# 安装依赖 (国内用户加清华源 -i https://pypi.tuna.tsinghua.edu.cn/simple)
+pip install -r requirements.txt
 
 # 配置文件
-cp config/.env.example config/.env  # 填入 DEEPSEEK_API_KEY
+cp config/.env.example config/.env   # 填入 DEEPSEEK_API_KEY
+```
+
+### HuggingFace 模型缓存 (国内用户)
+
+```bash
+# BGE 嵌入模型 (~400MB, RAG 检索必需)
+# 方式 A: 自动下载 (需网络)
+export HF_ENDPOINT=https://hf-mirror.com   # 国内镜像
+
+# 方式 B: 手动下载到本地缓存
+pip install huggingface_hub
+HF_ENDPOINT=https://hf-mirror.com huggingface-cli download BAAI/bge-base-zh \
+  --local-dir pe/model_cache/bge-base-zh
+
+# Qwen2.5-Coder-3B (~6GB, 仅 FT 需要)
+HF_ENDPOINT=https://hf-mirror.com huggingface-cli download Qwen/Qwen2.5-Coder-3B-Instruct \
+  --local-dir models/qwen2.5-coder-3b-instruct
+```
+
+### Milvus 向量索引
+
+```bash
+# 方式 A: 使用预构建索引 (已随仓库提供)
+# pe/milvus_lite.db       — v6 索引  (text_for_embedding 含源码)
+# pe/milvus_lite_v7min.db — v7min 索引 (仅函数签名)
+
+# 方式 B: 从源码重建索引 (跨平台/跨版本兼容)
+python pe/build_index.py         # v6: text_for_embedding 含源码
+python pe/build_index_v7min.py   # v7min: text_for_embedding 仅签名
 ```
 
 ## 项目结构
 
 ```
 repomind-fastapi/
+├── requirements.txt              # Python 依赖清单
+├── README.md                     # 项目文档 (本文件)
 ├── benchmark/
-│   ├── questions.jsonl          # 50 条评测题 (call_chain/cross_file_dep/function_locate/impact_analysis)
-│   ├── run_eval.py              # 端到端评测 (支持 DeepSeek API + 本地模型)
-│   ├── rejudge.py               # 批量重打分 (基于新 ground_truth 重评旧结果)
-│   ├── judge_prompts/           # LLM-as-Judge 评分规则
-│   └── results/                 # 所有实验结果
+│   ├── questions.jsonl           # 50 条评测题
+│   ├── run_eval.py               # 端到端评测
+│   ├── rejudge.py                # 批量重打分
+│   ├── judge_prompts/            # LLM-as-Judge 评分规则
+│   └── results/                  # 所有实验结果
 ├── pe/
 │   ├── v1_system.txt            # System Prompt 角色+格式 (40行)
 │   ├── v3_cot.txt               # CoT 推理引导
@@ -215,7 +246,7 @@ bash scripts/qwen_missing.sh  # peonly/ragonly/ft_pe/ft_rag
 | ③ RAG Pipeline + Recall@K/MRR | ✅ |
 | ④ FT ≥500条 + 过拟合监控 | ✅ |
 | ⑤ 消融矩阵 8 配置 | ✅ |
-| ⑥ 可复现性 | ✅ (本 README) |
+| ⑥ 可复现性 | ✅ requirements.txt + .env.example + README 完整 setup |
 
 ## 报告
 

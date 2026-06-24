@@ -1,0 +1,27 @@
+# =============================================================================
+# RepoMind 依赖清单
+# =============================================================================
+# 安装:
+#   pip install -r requirements.txt
+#
+# PyTorch (CUDA 12.1) 需从官方索引安装:
+#   pip install torch==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+#
+# 国内用户建议加清华源:
+#   pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# =============================================================================
+
+# --- 核心依赖 (评测 + RAG) ---
+openai>=2.0,<3.0           # DeepSeek API 调用 (OpenAI-compatible)
+python-dotenv>=1.0,<2.0    # .env 配置加载
+pymilvus>=3.0,<4.0         # Milvus Lite 向量数据库
+sentence-transformers>=3.0  # BGE 文本嵌入 + Cross-Encoder reranker
+rank-bm25>=0.2,<0.3        # BM25 关键词检索
+
+# --- SFT 微调依赖 (仅训练需要) ---
+transformers==4.48.3        # HuggingFace Transformers (模型加载/推理)
+peft>=0.14,<1.0            # LoRA/QLoRA 参数高效微调
+bitsandbytes>=0.45,<1.0    # 4-bit/8-bit 量化
+datasets>=3.0,<5.0         # HuggingFace Datasets (数据加载)
+accelerate>=1.0,<2.0       # 分布式训练加速
+trl>=0.15,<1.0             # Transformer Reinforcement Learning (SFT Trainer)
