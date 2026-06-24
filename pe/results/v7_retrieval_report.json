@@ -44,13 +44,13 @@
         "use_bm25": true
       },
       "v6_index": {
-        "recall_at_5": 0.3198,
-        "recall_at_10": 0.34,
+        "recall_at_5": 0.3098,
+        "recall_at_10": 0.33,
         "mrr_at_10": 0.2107
       },
       "v7min_index": {
-        "recall_at_5": 0.5282,
-        "recall_at_10": 0.5302,
+        "recall_at_5": 0.5182,
+        "recall_at_10": 0.5202,
         "mrr_at_10": 0.285
       }
     },
@@ -62,13 +62,13 @@
         "use_bm25": true
       },
       "v6_index": {
-        "recall_at_5": 0.3225,
-        "recall_at_10": 0.34,
+        "recall_at_5": 0.3125,
+        "recall_at_10": 0.33,
         "mrr_at_10": 0.2167
       },
       "v7min_index": {
-        "recall_at_5": 0.5187,
-        "recall_at_10": 0.5302,
+        "recall_at_5": 0.5087,
+        "recall_at_10": 0.5202,
         "mrr_at_10": 0.2313
       }
     }
@@ -84,12 +84,12 @@
         "v7min_index": 0.0
       },
       "adaptive_bm25": {
-        "v6_index": 0.459,
-        "v7min_index": 0.2923
+        "v6_index": 0.4205,
+        "v7min_index": 0.2538
       },
       "adaptive_bm25_mmr": {
-        "v6_index": 0.459,
-        "v7min_index": 0.2923
+        "v6_index": 0.4205,
+        "v7min_index": 0.2538
       }
     },
     "cross_file_dep": {

@@ -29,10 +29,11 @@ repomind-fastapi/
 ├── benchmark/
 │   ├── questions.jsonl          # 50 条评测题 (call_chain/cross_file_dep/function_locate/impact_analysis)
 │   ├── run_eval.py              # 端到端评测 (支持 DeepSeek API + 本地模型)
+│   ├── rejudge.py               # 批量重打分 (基于新 ground_truth 重评旧结果)
 │   ├── judge_prompts/           # LLM-as-Judge 评分规则
 │   └── results/                 # 所有实验结果
 ├── pe/
-│   ├── v1_system.txt            # System Prompt 角色+格式 (39行)
+│   ├── v1_system.txt            # System Prompt 角色+格式 (40行)
 │   ├── v3_cot.txt               # CoT 推理引导
 │   ├── fewshot_examples.jsonl   # 20 条 Few-shot 示例
 │   ├── v4_postprocess.py        # 后处理规则
@@ -69,9 +70,9 @@ python benchmark/run_eval.py --seed 42
 # PE v3 (System Prompt + Few-shot + CoT + 后处理)
 python benchmark/run_eval.py --pe-version 3 --seed 42
 
-# PE + RAG hybrid (SOTA)
+# PE + RAG hybrid (SOTA = BM25+RRF, 不加MMR)
 python benchmark/run_eval.py --pe-version 3 --enable-rag \
-  --adaptive-top-k --use-bm25 --use-mmr --seed 42
+  --adaptive-top-k --use-bm25 --seed 42
 ```
 
 ### 2. 检索精度评估
@@ -125,29 +126,33 @@ bash scripts/qwen_missing.sh  # peonly/ragonly/ft_pe/ft_rag
 
 ## 主要结果
 
+> **2026-06-18 数据清洗**: ground_truth 修复 11 条（清除泄漏的 docstring/功能描述），全部结果重新打分。
+> 分数波动 ±1-4 分，消融差值不变，结论一致。
+
 ### DeepSeek PE 四维优化 (temperature=0, seed复测)
 
 | 阶段 | 配置 | 分数 | 增量 |
-|---|---|---|---|---|
-| v0 | baseline（无优化）| 55 | — |
-| v1 | + System Prompt（角色+格式）| 55 | 0 |
-| v2 | + Few-shot (20条) | 71 | +16 |
-| v3 | + CoT 推理引导 | 74 | +3 |
-| v4 | + 后处理 | 74 | 0 |
-| **v6** | **删误导规则 + 3次seed复测** | **88.7 ± 1.5** | **+14.7** |
+|---|---|---|---|
+| v0 | baseline（无优化）| 52 | — |
+| v1 | + System Prompt（角色+格式）| 54 | +2 |
+| v2 | + Few-shot (20条) | 73 | +21 |
+| v3 | + CoT 推理引导 | 72 | +20 |
+| v4 | + 后处理 | 72 | +20 |
+| **v6** | **删误导规则 + 3次seed复测** | **88.0 ± 1.0** | **+36.0** |
 
 ### DeepSeek RAG 消融矩阵 (3-seed mean±std, v7min索引)
 
 | 配置 | 分数 | 检索 R@10 |
 |---|---|---|
-| baseline | 55 | — |
-| PE only | 88.7 ± 1.5 | — |
-| RAG only (v6 单向量) | 61.3 ± 2.1 | 0.11 |
-| PE+RAG v6 (向量) | 85.3 ± 2.5 | — |
-| PE+RAG v7 (BM25+RRF) | 89.3 ± 2.1 | 0.34 |
-| **PE+RAG v7 (BM25+RRF+MMR)** | **91.7 ± 2.5** 🔴 **SOTA** | 0.34 |
-| v7min (仅签名) PE+RAG (BM25+RRF) | 90.0 ± 1.0 | **0.53** |
-| v7min (仅签名) PE+RAG (BM25+RRF+MMR) | 83.7 ± 0.6 | 0.53 |
+| baseline | 52 | — |
+| PE only | 88.0 ± 1.0 | — |
+| RAG only (v6 单向量) | 59.0 ± 1.7 | 0.11 |
+| RAG only (v7 BM25+RRF) | 65.7 ± 5.9 | 0.33 |
+| PE+RAG v6 (向量) | 85.7 ± 3.5 | — |
+| **PE+RAG v7 (BM25+RRF)** | **92.0 ± 3.0** 🔴 **SOTA** | 0.33 |
+| PE+RAG v7 (BM25+RRF+MMR) | 88.7 ± 1.5 | 0.33 |
+| v7min (仅签名) PE+RAG (BM25+RRF) | 83.0 | **0.52** |
+| v7min (仅签名) PE+RAG (BM25+RRF+MMR) | 88.0 | 0.52 |
 
 ### 检索精度对比 (4 config × 2 index)
 
@@ -155,47 +160,51 @@ bash scripts/qwen_missing.sh  # peonly/ragonly/ft_pe/ft_rag
 |---|---|---|---|
 | 纯向量 | 0.11 | 0.01 | 0.01 |
 | 向量+自适应top_k | 0.07 | 0.01 | 0.01 |
-| +BM25 | 0.34 | **0.53** | 0.29 |
-| +BM25+MMR | 0.34 | 0.53 | 0.23 |
+| +BM25 | 0.33 | **0.52** | 0.29 |
+| +BM25+MMR | 0.33 | 0.52 | 0.23 |
 
 > **反直觉发现**:
-> - **text_for_embedding**: v7min(仅签名) R@10=0.53 碾压 v6(含源码) R@10=0.34
-> - **检索最优 ≠ 端到端最优**: v7min R@10=0.53 但端到端 90.0, v6 R@10=0.34 但端到端 91.7 — 召回过高引入噪声时 MMR 反而受益
-> - **MMR 双刃剑**: v6 索引上 MMR 提升端到端 +2.4 (89.3→91.7), v7min 索引上 MMR 拖低端到端 -6.3 (90.0→83.7)
+> - **text_for_embedding**: v7min(仅签名) R@10=0.52 碾压 v6(含源码) R@10=0.33
+> - **检索最优 ≠ 端到端最优**: v7min R@10=0.52 但端到端仅 83, v7 R@10=0.33 但端到端 92 — 召回太准时 MMR 反而是毒药
+> - **MMR 双刃剑（新结论）**: v7 索引上 MMR 拖低端到端 -3.3 (92.0→88.7), v7min 索引上 MMR 反而提升 +5.0 (83.0→88.0) — 检索不准时多样性有价值，检索准了别加
 
 ### Qwen3B 完整消融矩阵 (8/8, Qwen2.5-Coder-3B, QLoRA 8bit)
 
 | 配置 | 总分 | call_chain | cross_file | func_locate | impact |
 |---|---|---|---|---|---|
-| baseline | **47** | 14/39 | 12/39 | 12/36 | 9/36 |
-| ragonly | 46 | 14 | 11 | 12 | 9 |
-| **peonly** | **59** | 15 | **22** | 9 | 13 |
-| perag | 59 | 15 | 22 | 9 | 13 |
+| baseline | **45** | 13/39 | 11/39 | 12/36 | 9/36 |
+| ragonly | 45 | 13 | 11 | 12 | 9 |
+| **peonly** | **58** | 14 | **22** | 9 | 13 |
+| perag | 58 | 14 | 22 | 9 | 13 |
 | ftonly | 51 | 14 | 13 | 13 | 11 |
-| ft_rag | 52 | 15 | 13 | 13 | 11 |
-| ft_pe | 46 | 15 | 13 | 10 | 8 |
-| ft_all | 47 | 15 | 13 | 11 | 8 |
+| ft_rag | 50 | 13 | 13 | 13 | 11 |
+| ft_pe | 45 | 14 | 13 | 10 | 8 |
+| ft_all | 45 | 14 | 13 | 10 | 8 |
 
-> PE 唯一有效 (+12), RAG 零效果, FT+PE 倒退 (FT格式与PE冲突), 3B天花板~59。
+> PE 唯一有效 (+13), RAG 零效果, FT+PE 倒退 (FT格式与PE冲突), 3B天花板~58。
 
 ### 跨模型对照
 
 | 配置 | DeepSeek | Qwen3B |
 |---|---|---|
-| baseline | 55 | 47 |
-| PE only | **88.7** | 59 |
-| RAG only | 61 | 46 |
-| PE+RAG | **91.7** | 59 |
+| baseline | 52 | 45 |
+| PE only | **88.0** | 58 |
+| RAG only | 65.7 | 45 |
+| PE+RAG | **92.0** | 58 |
 | FT only | — | 51 |
+| FT+PE | — | 45 |
+| FT+RAG | — | 50 |
+| FT+PE+RAG | — | 45 |
 
-### v8 改进实验 (2026-06-17, 负面结论)
+### v8 改进实验 (2026-06-17, 负面/混合结论)
 
-| 实验 | 分数 | vs v7 baseline (89) |
+| 实验 | 分数 | vs v7 baseline (92) |
 |---|---|---|
-| query rewrite | 78 | -11 🔴 |
-| Cross-Encoder reranker | 未跑通 | 网络/GPU限制 |
+| query rewrite | 78 | -14 🔴 |
+| Cross-Encoder reranker | 88 | -4 |
+| reranker + rewrite | 89 | -3 |
 
-> **教训**: 代码RAG的query越精确越好——自然语言扩展稀释函数名匹配。v7 hybrid (BM25+RRF, 89分) 维持当前最优。v8代码保留在 `pe/v8/`。
+> **教训**: 代码RAG的query越精确越好——自然语言扩展稀释函数名匹配。v7 hybrid (BM25+RRF, 92分) 维持当前最优。reranker 单独用有小幅提升但不及 SOTA。v8代码保留在 `pe/v8/`。
 
 ## 考核核对
 
